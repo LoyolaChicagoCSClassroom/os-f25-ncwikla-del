@@ -7,6 +7,8 @@
 
 #define MULTIBOOT2_HEADER_MAGIC         0xe85250d6
 
+extern char _end_kernel;
+
 const unsigned int multiboot_header[]  __attribute__((section(".multiboot"))) = {MULTIBOOT2_HEADER_MAGIC, 0, 16, -(16+MULTIBOOT2_HEADER_MAGIC), 0, 12};
 
 uint8_t inb (uint16_t _port) {
@@ -121,6 +123,7 @@ void main() {
                continue;
            }
             esp_printf((int (*) (int)) putc, "0x%02x %c\n", scancode, keyboard_map[scancode]);
+            esp_printf((int (*) (int)) putc, "End of kernel: %p\n", _end_kernel);
         }
     }
 }
