@@ -1,6 +1,7 @@
 
 #include <stdint.h>
 #include "rprintf.h"
+#include "page.h"
 
 #define width 80
 #define height 25
@@ -116,14 +117,14 @@ void main() {
  // Homework 2 Changes
     while(1) {
         uint8_t status = inb(0x64);
-
+        
         if((status & 1) == 1) {
             uint8_t scancode = inb(0x60);
             if (scancode > 128) {
                continue;
            }
             esp_printf((int (*) (int)) putc, "0x%02x %c\n", scancode, keyboard_map[scancode]);
-            esp_printf((int (*) (int)) putc, "End of kernel: %p\n", _end_kernel);
+            
         }
     }
 }
