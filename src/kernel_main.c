@@ -2,7 +2,8 @@
 #include <stdint.h>
 #include "rprintf.h"
 #include "page.h"
-
+#include "fatdriver.h"
+#include "ide.h"
 #define width 80
 #define height 25
 
@@ -107,6 +108,7 @@ int print_string(void (*pc)(char), char *s) {
      pc(*s);
      s++;
    }
+   return 0;
 }
 
 
@@ -115,6 +117,20 @@ void main() {
   //  unsigned short *vram = (unsigned short*)0xb8000; // Base address of video mem
   //  const unsigned char color = 7; // gray text on black background
  // Homework 2 Changes
+ fatInit();
+ struct rde *myFile = fatOpen("TEST.TXT");
+ if (myFile != NULL) {
+    char dataBuf[100];
+    int bytes = fatRead(myFile, dataBuf, sizeof(dataBuf));
+
+    for (int i = 0; i < bytes; i++) {
+       putc(dataBuf[i]);
+    }
+
+ } else {
+ esp_printf((int(*)(int))putc, "File not found!\n");
+}
+
     while(1) {
         uint8_t status = inb(0x64);
         

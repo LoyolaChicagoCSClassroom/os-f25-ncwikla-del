@@ -24,7 +24,8 @@ SDIR = src
 OBJS = \
 	kernel_main.o \
         rprintf.o \
-        page.o
+        page.o \
+        fatdriver.o
 
 # Make sure to keep a blank line here after OBJS list
 
@@ -35,7 +36,7 @@ $(ODIR)/%.o: $(SDIR)/%.c
 
 $(ODIR)/%.o: $(SDIR)/%.s
 	$(CC) $(CFLAGS) -c -g -o $@ $^
-
+	 nasm -f elf32 -g -o $@ %^
 
 all: bin rootfs.img
 
